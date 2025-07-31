@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实达24针打印机驱动程序使用培训</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .slide {
+            display: none !important;
+            padding: 30px;
+            height: 100vh;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block !important;
+        }
+
+        /* 封面样式 */
+        .cover-slide {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cover-slide h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: bold;
+        }
+
+        .cover-slide .subtitle {
+            font-size: 1.8em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .cover-slide .company-info {
+            font-size: 1.2em;
+            margin-top: 60px;
+            opacity: 0.8;
+        }
+
+        .cover-slide .start-badge {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            padding: 10px 20px;
+            margin-bottom: 40px;
+            font-size: 1em;
+            letter-spacing: 2px;
+        }
+
+        /* 普通幻灯片样式 */
+        .slide h1 {
+            color: #4a90e2;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #4a90e2;
+            padding-bottom: 10px;
+        }
+
+        .slide h2 {
+            color: #357abd;
+            font-size: 1.6em;
+            margin: 20px 0 12px 0;
+        }
+
+        .slide h3 {
+            color: #555;
+            font-size: 1.3em;
+            margin: 15px 0 8px 0;
+        }
+
+        .slide h4 {
+            color: #666;
+            font-size: 1.1em;
+            margin: 12px 0 6px 0;
+        }
+
+        .slide p, .slide li {
+            font-size: 1em;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .slide ul, .slide ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .slide li {
+            margin-bottom: 6px;
+        }
+
+        /* 左右并排布局 */
+        .content-row {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+            align-items: flex-start;
+        }
+
+        .content-left {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .content-right {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* 图片演示样式 - 优化显示效果 */
+        .image-demo {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .image-demo p {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #495057;
+            font-size: 0.95em;
+        }
+
+        .image-demo img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 350px;
+            min-height: 200px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .image-demo img:hover {
+            transform: scale(1.05);
+        }
+
+        /* 图片网格布局 - 横向排列多张图片 */
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .images-grid .image-demo {
+            margin: 0;
+        }
+
+        /* 双图片横向布局 */
+        .images-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        /* 三图片横向布局 */
+        .images-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        /* 大图片容器 - 单张图片时使用 */
+        .large-image-demo {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .large-image-demo img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 450px;
+            object-fit: contain;
+        }
+
+        /* 右侧内容区域优化 */
+        .content-right {
+            flex: 1.2;
+            min-width: 0;
+        }
+
+        /* 重要提示框 */
+        .important-note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-left: 4px solid #fdcb6e;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        .important-note strong {
+            color: #e17055;
+        }
+
+        /* 警告框 */
+        .warning-box {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-left: 4px solid #dc3545;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        /* 代码块 */
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            margin: 12px 0;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #4a90e2;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* 目录样式 */
+        .toc-item {
+            background: #f8f9fa;
+            border-left: 4px solid #4a90e2;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 0 4px 4px 0;
+            transition: all 0.3s ease;
+        }
+
+        .toc-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .toc-item h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.1em;
+        }
+
+        .toc-item p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* 步骤列表样式 */
+        .step-list {
+            counter-reset: step-counter;
+        }
+
+        .step-list li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 10px;
+        }
+
+        .step-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #4a90e2;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        /* 导航按钮样式 */
+        .nav-buttons {
+            position: fixed !important;
+            bottom: 30px !important;
+            right: 30px !important;
+            z-index: 9999 !important;
+            display: flex !important;
+            gap: 10px !important;
+        }
+
+        .nav-btn {
+            background: #4a90e2 !important;
+            color: white !important;
+            border: none !important;
+            padding: 12px 20px !important;
+            border-radius: 20px !important;
+            cursor: pointer !important;
+            font-size: 1em !important;
+            font-weight: bold !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+            min-width: 80px !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .nav-btn:hover {
+            background: #357abd !important;
+            transform: translateY(-2px) !important;
+        }
+
+        .nav-btn:disabled {
+            background: #ccc !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+        }
+
+        /* 页码计数器 */
+        .slide-counter {
+            position: fixed !important;
+            bottom: 30px !important;
+            left: 30px !important;
+            background: rgba(0,0,0,0.7) !important;
+            color: white !important;
+            padding: 8px 15px !important;
+            border-radius: 15px !important;
+            font-size: 1em !important;
+            font-weight: bold !important;
+            z-index: 9999 !important;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .content-row {
+                flex-direction: column;
+            }
+            
+            .slide {
+                padding: 20px;
+            }
+            
+            .slide h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cover-slide h1 {
+                font-size: 2.5em;
+            }
+            
+            .slide h1 {
+                font-size: 1.6em;
+            }
+            
+            .slide h2 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        
+        <!-- 封面 -->
+        <div class="slide active cover-slide">
+            <div class="start-badge">START</div>
+            <h1>24针打印机驱动程序</h1>
+            <div class="subtitle">使用手册讲座</div>
+            <div class="company-info">
+                <p>🔧 全面掌握安装配置 • 🚀 深入解析高级功能 • ✅ 快速解决常见问题</p>
+            </div>
+        </div>
+
+        <!-- 目录 -->
+        <div class="slide">
+            <h1>培训内容目录</h1>
+            <div class="toc-item">
+                <h3>1. 前言</h3>
+                <p>驱动程序概述与重要提示</p>
+            </div>
+            <div class="toc-item">
+                <h3>2. Windows 系统下的安装与卸载</h3>
+                <p>Setup.exe安装、手动安装、卸载方法</p>
+            </div>
+            <div class="toc-item">
+                <h3>3. Linux 系统下的安装与卸载</h3>
+                <p>图形界面安装、命令行安装、添加打印机</p>
+            </div>
+            <div class="toc-item">
+                <h3>4. 驱动程序属性详解</h3>
+                <p>打印首选项、功能设置、页面设置、打印效果</p>
+            </div>
+            <div class="toc-item">
+                <h3>5. 常见问题解答 (FAQ)</h3>
+                <p>通用问题、Windows特定问题、Linux特定问题</p>
+            </div>
+        </div>
+
+        <!-- 第1章：前言 -->
+        <div class="slide">
+            <h1>1. 前言</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>手册目的</h2>
+                    <p>本手册旨在帮助用户顺利安装、配置和使用实达24针系列打印机驱动程序。</p>
+                    
+                    <h2>适用范围</h2>
+                    <ul>
+                        <li>Windows 操作系统详细安装与卸载步骤</li>
+                        <li>Linux 操作系统详细安装与卸载步骤</li>
+                        <li>驱动程序各项参数配置说明</li>
+                        <li>常见问题的解决方案</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="important-note">
+                        <strong>重要提示：</strong>
+                        <ol>
+                            <li>在排查打印问题时，请优先确认是否存在更新版本的驱动程序。若有，请先升级至最新版本后重新测试。</li>
+                            <li>当所有标准应用打印正常，仅在特定行业软件中出现打印异常时，此问题可能涉及定制化开发，需要客户提供相关技术资料。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第2章：Windows安装概述 -->
+        <div class="slide">
+            <h1>2. Windows 系统下的安装与卸载</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>2.1 安装驱动程序</h2>
+                    <h3>2.1.1 使用 Setup.exe 安装（推荐）</h3>
+                    <ol class="step-list">
+                        <li><strong>启动安装程序</strong><br>
+                            双击 <code>Setup.exe</code> 文件启动安装向导</li>
+                        <li><strong>自动检测打印机</strong><br>
+                            确保打印机已通过 USB 或并口连接并开机</li>
+                        <li><strong>选择安装模式</strong><br>
+                            自动安装或手动安装</li>
+                    </ol>
+                </div>
+                <div class="content-right">
+                    <div class="images-row-2">
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>Setup.exe安装界面</p>
+                            <img src="image/Setup_Exe_Installation.jpg" alt="Setup.exe安装界面">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>自动检测安装界面</p>
+                            <img src="image/Auto_Detection_Installation.jpg" alt="自动检测安装界面">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Windows手动安装 -->
+        <div class="slide">
+            <h1>Windows 手动安装步骤</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>2.1.2 手动安装步骤</h2>
+                    <p>当自动检测失败或需要自定义配置时：</p>
+                    <ol class="step-list">
+                        <li><strong>进入手动安装界面</strong><br>
+                            点击"自定义安装"按钮</li>
+                        <li><strong>选择打印机型号</strong><br>
+                            从下拉列表中选择型号</li>
+                        <li><strong>选择连接端口</strong><br>
+                            选择相应端口（USB001 或 LPT1）</li>
+                        <li><strong>完成安装</strong><br>
+                            确认信息后点击"安装"</li>
+                    </ol>
+                </div>
+                <div class="content-right">
+                    <div class="images-row-2">
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>手动安装步骤1</p>
+                            <img src="image/Manual_Installation_Step1.jpg" alt="手动安装步骤1">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>选择打印机型号</p>
+                            <img src="image/Manual_Installation_Step2.jpg" alt="选择打印机型号">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Windows卸载 -->
+        <div class="slide">
+            <h1>Windows 驱动程序卸载</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>2.2 卸载驱动程序</h2>
+                    <h3>方法一：使用专用卸载工具（推荐）</h3>
+                    <ul>
+                        <li>运行 <code>PrinterDriverCleaner.exe</code> 程序</li>
+                    </ul>
+                    
+                    <h3>方法二：通过安装程序卸载</h3>
+                    <ul>
+                        <li>再次运行 <code>Setup.exe</code></li>
+                        <li>选择需要卸载的打印机型号</li>
+                    </ul>
+
+                    <h3>方法三：通过系统功能卸载</h3>
+                    <ul>
+                        <li>控制面板 > 设备和打印机</li>
+                        <li>删除设备和驱动程序包</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>专用卸载工具界面</p>
+                        <img src="image/Uninstall_Printer_Driver_Tool.jpg" alt="专用卸载工具界面">
+                    </div>
+                    <div class="warning-box">
+                        <strong>注意：</strong>卸载前，请关闭打印机电源，并退出所有可能调用打印功能的应用程序。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3章：Linux安装 -->
+        <div class="slide">
+            <h1>3. Linux 系统下的安装与卸载</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>3.1 安装驱动程序</h2>
+                    <p>本驱动为 Debian/Ubuntu 及其衍生发行版提供 <code>.deb</code> 格式的安装包。</p>
+
+                    <h3>方法一：图形界面安装（推荐）</h3>
+                    <ul>
+                        <li>直接双击 <code>.deb</code> 安装包</li>
+                        <li>使用系统自带的软件包管理器完成安装</li>
+                    </ul>
+
+                    <h3>方法二：命令行安装</h3>
+                    <div class="code-block">
+sudo dpkg -i sd24plq_1.1.0-1.20_amd64.deb
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="images-row-2">
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>Linux图形界面安装</p>
+                            <img src="image/Linux_Installer_GUI.jpg" alt="Linux图形界面安装">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>Linux添加打印机界面</p>
+                            <img src="image/Add_Printer_Linux.jpg" alt="Linux添加打印机界面">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Linux CPU架构对应 -->
+        <div class="slide">
+            <h1>Linux CPU架构对应与注意事项</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>CPU架构对应表</h2>
+                    <table>
+                        <tr>
+                            <th>适配 CPU / 芯片平台</th>
+                            <th>指令集架构</th>
+                            <th>对应驱动包</th>
+                        </tr>
+                        <tr>
+                            <td>Intel、AMD、兆芯、海光</td>
+                            <td>AMD64</td>
+                            <td>sd24plq_1.1.0-1.20_amd64.deb</td>
+                        </tr>
+                        <tr>
+                            <td>鲲鹏、飞腾、海思麒麟</td>
+                            <td>ARM64</td>
+                            <td>sd24plq_1.1.0-1.20_arm64.deb</td>
+                        </tr>
+                    </table>
+
+                    <h2>3.2 卸载驱动程序</h2>
+                    <h3>图形界面卸载</h3>
+                    <div class="code-block">
+再次双击 .deb 安装包，选择卸载
+                    </div>
+                    <h3>命令行卸载</h3>
+                    <div class="code-block">
+sudo dpkg -r sd24plq
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>查看系统芯片架构</p>
+                        <img src="image/View_System_Information.jpg" alt="查看系统芯片架构">
+                    </div>
+                    <div class="important-note">
+                        <strong>注意事项：</strong>
+                        <ul>
+                            <li><strong>签名问题</strong>：部分系统可能需要开启开发者模式</li>
+                            <li><strong>依赖问题</strong>：若提示依赖关系不足，请改用命令行安装</li>
+                            <li><strong>架构匹配</strong>：请根据CPU平台选择正确的驱动包</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第4章：驱动属性概述 -->
+        <div class="slide">
+            <h1>4. 驱动程序属性详解</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>属性界面访问方式</h2>
+                    <ul>
+                        <li>在应用程序的打印对话框中点击"首选项"或"属性"按钮</li>
+                        <li>右键点击打印机图标，选择"打印首选项"</li>
+                    </ul>
+
+                    <h2>4.1 打印首选项</h2>
+                    <p>打印首选项是用户最常用的设置界面，包含以下主要功能：</p>
+                    <ul>
+                        <li><strong>纸张尺寸</strong>：选择合适的纸张规格</li>
+                        <li><strong>打印方向</strong>：纵向或横向打印</li>
+                        <li><strong>打印质量</strong>：选择打印分辨率</li>
+                        <li><strong>份数</strong>：设置打印份数</li>
+                        <li><strong>打印方向</strong>：单向或双向打印选项</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="images-row-2">
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>打印首选项主界面</p>
+                            <img src="image/Print_Preferences_Main.jpg" alt="打印首选项主界面">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>打印首选项高级设置</p>
+                            <img src="image/Print_Preferences_Main_Advanced.jpg" alt="打印首选项高级设置">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 打印机属性页概览 -->
+        <div class="slide">
+            <h1>4.2 打印机属性页快速浏览</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>主要功能页面</h2>
+                    <ol class="step-list">
+                        <li><strong>打印功能设置页面</strong><br>
+                            配置打印机的核心打印行为</li>
+                        <li><strong>页面设置功能页面</strong><br>
+                            调整页面布局、尺寸和方向</li>
+                        <li><strong>双色打印功能设置页面</strong><br>
+                            调整打印色彩与图像质量</li>
+                    </ol>
+
+                    <div class="important-note">
+                        <strong>跨平台兼容性：</strong>
+                        <p>Linux 版驱动的功能与 Windows 版保持一致，但所有选项均通过下拉列表选择，不支持手动输入。</p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="images-row-2">
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>打印功能设置界面</p>
+                            <img src="image/Print_Function_Settings.jpg" alt="打印功能设置界面">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>页面设置界面</p>
+                            <img src="image/Page_Setup.jpg" alt="页面设置界面">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4.3 打印功能设置 -->
+        <div class="slide">
+            <h1>4.3 打印功能设置详解</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>核心功能配置</h2>
+                    <h3>裁剪尾部空白</h3>
+                    <ul>
+                        <li>自动移除每行末尾的空白字符</li>
+                        <li>优化打印数据，解决内容超宽导致的错位</li>
+                    </ul>
+
+                    <h3>跳过空白页</h3>
+                    <ul>
+                        <li>自动跳过完全空白的页面</li>
+                        <li>节省纸张并提高效率</li>
+                    </ul>
+
+                    <h3>打印流水</h3>
+                    <ul>
+                        <li>打印完一页后不执行换页操作</li>
+                        <li>适用于流水单、日志等连续打印场景</li>
+                    </ul>
+
+                    <h3>OKI 仿真模式</h3>
+                    <ul>
+                        <li>模拟 OKI 打印机的指令集</li>
+                        <li>用于兼容仅支持 OKI 模式的旧款机型</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="images-row-3">
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>裁剪尾部空白</p>
+                            <img src="image/Trim_Trailing_Whitespace_Per_Line.jpg" alt="裁剪尾部空白">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>跳过空白页</p>
+                            <img src="image/Skip_BlankPaper.jpg" alt="跳过空白页">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>OKI仿真模式</p>
+                            <img src="image/Enable_OKI_Emulation.jpg" alt="OKI仿真模式">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4.3 自定义打印命令 -->
+        <div class="slide">
+            <h1>4.3 自定义打印命令</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>自定义命令功能</h2>
+                    <p>允许高级用户在打印任务的特定阶段插入自定义的 ESC/P 控制命令（十六进制格式）：</p>
+                    <ul>
+                        <li><strong>文件开始</strong>：打印任务开始时执行</li>
+                        <li><strong>页开始</strong>：每页开始时执行</li>
+                        <li><strong>页结束</strong>：每页结束时执行</li>
+                        <li><strong>文件结束</strong>：打印任务结束时执行</li>
+                    </ul>
+                    
+                    <div class="warning-box">
+                        <strong>注意：</strong>对于部分老旧型号的票据打印机，若安装新驱动后无法打印，可尝试关闭"文件开始"和"文件结束"中的发送命令。
+                    </div>
+                </div>
+                <div class="content-right">
+                    <div class="images-row-3">
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>文件开始命令</p>
+                            <img src="image/Cmd_File_Start.jpg" alt="文件开始命令">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>页开始命令</p>
+                            <img src="image/Cmd_Page_Start.jpg" alt="页开始命令">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>禁用发送命令</p>
+                            <img src="image/Disabled_SendCmd.jpg" alt="禁用发送命令">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4.4 页面设置 -->
+        <div class="slide">
+            <h1>4.4 页面设置功能</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>页面布局调整</h2>
+                    <h3>图像旋转</h3>
+                    <ul>
+                        <li>选项：不旋转、旋转90°、旋转180°、旋转270°</li>
+                        <li>用于校正特定软件在处理横向页面时的自动旋转问题</li>
+                    </ul>
+
+                    <h3>页面缩放</h3>
+                    <ul>
+                        <li>可按百分比（50-100%）调整打印内容的宽度和高度</li>
+                        <li>适用于套打场景的微调和内容适配</li>
+                    </ul>
+
+                    <h3>打印位置调整</h3>
+                    <ul>
+                        <li>通过垂直和水平偏移量精确控制打印起始位置</li>
+                        <li>单位：0.1mm，范围：-1000 至 1000</li>
+                        <li>正值：向下/向右偏移；负值：向上/向左偏移</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="images-row-2">
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>旋转页面设置</p>
+                            <img src="image/Rotate_Page.jpg" alt="旋转页面设置">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>打印内容偏移和缩放</p>
+                            <img src="image/Print_Content_Offset_and_Scaling.jpg" alt="打印内容偏移和缩放">
+                        </div>
+                    </div>
+                    <div class="important-note">
+                        <strong>页面内容保护：</strong>启用后，可防止因偏移量设置过大导致打印内容超出纸张范围而被裁切。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4.5 打印效果设置 -->
+        <div class="slide">
+            <h1>4.5 打印效果设置</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>双色打印配置</h2>
+                    <h3>双色打印设置</h3>
+                    <ul>
+                        <li>启用并选择双色打印模式，默认模式一</li>
+                        <li>不同模式对应不同的数据组织方式</li>
+                        <li>若模式一出现乱码，请尝试切换至模式二</li>
+                    </ul>
+
+                    <h3>智能图像处理</h3>
+                    <ul>
+                        <li><strong>人像识别</strong>：自动识别并优化人像区域</li>
+                        <li><strong>印章前置</strong>：确保印章能以红色完整打印</li>
+                        <li><strong>底纹处理</strong>：保留背景底纹的同时清晰打印前景文字</li>
+                    </ul>
+
+                    <h3>红色像素范围设置</h3>
+                    <ul>
+                        <li>通过调整 RGB 阈值范围，精确定义红色像素</li>
+                        <li>用于优化红色印章等的打印效果</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>人像识别功能</p>
+                        <img src="image/Portrait_Recognition_Feature.jpg" alt="人像识别功能">
+                    </div>
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>印章前置效果</p>
+                        <img src="image/Stamp_Front_Layer_Print_Effect.jpg" alt="印章前置效果">
+                    </div>
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>红色阈值范围</p>
+                        <img src="image/Red_Threshold_Range.jpg" alt="红色阈值范围">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4.5 打印效果调整 -->
+        <div class="slide">
+            <h1>4.5 打印效果调整</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>打印质量优化</h2>
+                    <h3>双色色带位置</h3>
+                    <ul>
+                        <li>设置红、黑两色色带分别对应的打印针位（0-24针）</li>
+                        <li>可通过"针测试"功能打印色带的实际覆盖范围</li>
+                    </ul>
+
+                    <h3>打印效果调整</h3>
+                    <ul>
+                        <li><strong>图像模式</strong>：
+                            <ul>
+                                <li>"对比度较高"：适合文本打印</li>
+                                <li>"保留更细节"：适合图像打印</li>
+                            </ul>
+                        </li>
+                        <li><strong>打印浓度</strong>：调整整体及人像区域的打印浓度（0-255）</li>
+                    </ul>
+
+                    <h3>应用场景</h3>
+                    <p>当打印内容不清晰或断线时：</p>
+                    <ol>
+                        <li>首先尝试提高分辨率（打印首选项-高级）</li>
+                        <li>若效果不佳，再调整图像模式和打印浓度</li>
+                    </ol>
+                </div>
+                <div class="content-right">
+                    <div class="images-row-3">
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>提高打印分辨率</p>
+                            <img src="image/Increase_Print_Resolution.jpg" alt="提高打印分辨率">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>增加图像密度</p>
+                            <img src="image/Increase_Image_Density.jpg" alt="增加图像密度">
+                        </div>
+                        <div class="image-demo">
+                            <p><strong>演示图：</strong>关于页面</p>
+                            <img src="image/About.jpg" alt="关于页面">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第5章：FAQ概述 -->
+        <div class="slide">
+            <h1>5. 常见问题解答 (FAQ)</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>问题分类</h2>
+                    <div class="toc-item">
+                        <h3>5.1 通用问题</h3>
+                        <p>打印乱码、自定义纸张、位置调整、设备识别等</p>
+                    </div>
+                    <div class="toc-item">
+                        <h3>5.2 Windows 系统特定问题</h3>
+                        <p>打印服务、USB端口、驱动更新、文件保存等</p>
+                    </div>
+                    <div class="toc-item">
+                        <h3>5.3 Linux 系统特定问题</h3>
+                        <p>CUPS服务、端口配置、串口设置、数据收集等</p>
+                    </div>
+                </div>
+                <div class="content-right">
+                    <h2>常见问题快速索引</h2>
+                    <ul>
+                        <li>打印输出乱码 → 检查驱动型号、端口设置、仿真模式</li>
+                        <li>打印内容不清晰 → 提高分辨率、调整图像模式、增加浓度</li>
+                        <li>红色印章不清晰 → 调整红色像素范围、色带位置</li>
+                        <li>安装时无法识别 → 检查Device ID、数据线、接口</li>
+                        <li>自定义纸张设置 → 页面设置中创建自定义尺寸</li>
+                        <li>打印位置偏移 → 调整垂直和水平偏移量</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5.1 通用问题 -->
+        <div class="slide">
+            <h1>5.1 通用问题解答</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>Q1：打印输出乱码、空走纸或打印几个字符就停止？</h2>
+                    <p><strong>排查步骤：</strong></p>
+                    <ol class="step-list">
+                        <li>确认驱动型号与打印机完全匹配</li>
+                        <li>检查端口设置是否正确（USB、LPT）</li>
+                        <li>关闭"OKI仿真模式"（除非特定需求）</li>
+                        <li>更换质量可靠的打印机数据线</li>
+                    </ol>
+
+                    <h2>Q2：如何打印自定义尺寸的票据或标签？</h2>
+                    <ol class="step-list">
+                        <li>在驱动属性"页面设置"中创建自定义纸张尺寸</li>
+                        <li>在应用程序页面设置中选择创建的纸张尺寸</li>
+                    </ol>
+
+                    <h2>Q3：如何微调打印内容的整体位置？</h2>
+                    <p>在驱动属性"页面设置"中，通过调整"垂直偏移"和"水平偏移"进行精确校准。</p>
+                </div>
+                <div class="content-right">
+                    <h2>Q4：安装时无法识别到打印机？</h2>
+                    <ol class="step-list">
+                        <li>检查并确保"Device ID"功能已开启</li>
+                        <li>检查数据线和接口，或更换计算机测试</li>
+                        <li>联系技术支持确认是否需要更新设备固件</li>
+                    </ol>
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>启用设备ID</p>
+                        <img src="image/Enable_Device_ID.jpg" alt="启用设备ID">
+                    </div>
+
+                    <h2>Q5：打印内容不清晰，有断点？</h2>
+                    <ol class="step-list">
+                        <li>检查色带状态和压杆位置</li>
+                        <li>提高打印分辨率</li>
+                        <li>选择"保留更细节"图像模式</li>
+                        <li>适当增加打印浓度</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5.2 Windows特定问题 -->
+        <div class="slide">
+            <h1>5.2 Windows 系统特定问题</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>Q1：打印服务(Print Spooler)意外中断？</h2>
+                    <p>通过 Windows 服务管理器重启 Print Spooler 服务。</p>
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>重启打印服务</p>
+                        <img src="image/Restart_Spooler_Server.jpg" alt="重启打印服务">
+                    </div>
+
+                    <h2>Q2：如何查看USB端口号？</h2>
+                    <p>在设备管理器中查看USB打印支持属性，找到对应端口号。</p>
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>获取USB端口号</p>
+                        <img src="image/Get_Usbport_Number.jpg" alt="获取USB端口号">
+                    </div>
+
+                    <h2>Q3：更新驱动后显示仍是旧版本？</h2>
+                    <p>使用专用卸载工具彻底卸载旧驱动后重新安装。</p>
+                </div>
+                <div class="content-right">
+                    <h2>Q4：如何保存打印任务为文件？</h2>
+                    <ol class="step-list">
+                        <li>在打印机属性"端口"选项卡中勾选 FILE: (打印到文件)</li>
+                        <li>执行打印操作，系统提示保存文件</li>
+                        <li>建议使用绝对路径（如 D:\test.prn）</li>
+                    </ol>
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>设置设备端口为FILE</p>
+                        <img src="image/Set_Device_Port_To_FILE.jpg" alt="设置设备端口为FILE">
+                    </div>
+
+                    <h2>Q5：卸载后仍有打印机图标？</h2>
+                    <p>这是Windows系统缓存的"虚影"。可右键删除设备，或重启计算机清除。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5.3 Linux特定问题 -->
+        <div class="slide">
+            <h1>5.3 Linux 系统特定问题</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>Q1：安装驱动后找不到打印机？</h2>
+                    <ul>
+                        <li>检查CUPS服务状态：<code>systemctl status cups</code></li>
+                        <li>驱动安装后需手动添加打印机</li>
+                    </ul>
+
+                    <h2>Q2：如何配置USB端口连接？</h2>
+                    <p>开启打印机Device ID功能后，系统通常能自动检测并填充设备URI。</p>
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>自动检测USB端口</p>
+                        <img src="image/Auto_Detect_USB_Port_Linux.jpg" alt="自动检测USB端口">
+                    </div>
+
+                    <h2>Q3：如何配置并口(LPT)连接？</h2>
+                    <ol class="step-list">
+                        <li>执行 <code>sudo lpinfo -v</code> 查找并口路径</li>
+                        <li>手动输入URI地址（如 parallel:/dev/lp2）</li>
+                    </ol>
+                </div>
+                <div class="content-right">
+                    <h2>Q4：如何配置串口连接？</h2>
+                    <p>通过CUPS Web管理界面 (http://localhost:631) 进行配置：</p>
+                    <ol class="step-list">
+                        <li>选择本地串口</li>
+                        <li>配置波特率等串口参数</li>
+                        <li>选择对应厂商和型号</li>
+                    </ol>
+                    <div class="image-demo">
+                        <p><strong>演示图：</strong>配置串口设置</p>
+                        <img src="image/Configure_Device_Serial_Port.jpg" alt="配置串口设置">
+                    </div>
+
+                    <h2>Q5：如何收集打印数据？</h2>
+                    <ol class="step-list">
+                        <li>修改 /etc/cups/cups-files.conf</li>
+                        <li>将 FileDevice 设为 Yes</li>
+                        <li>重启系统</li>
+                        <li>启用"打印到文件"功能</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- 培训总结 -->
+        <div class="slide">
+            <h1>培训总结</h1>
+            <div class="content-row">
+                <div class="content-left">
+                    <h2>关键要点回顾</h2>
+                    <ul>
+                        <li><strong>安装前准备</strong>：确保打印机型号匹配，连接正确，电源开启</li>
+                        <li><strong>优先使用自动安装</strong>：Setup.exe 自动检测是最简便的安装方式</li>
+                        <li><strong>问题排查顺序</strong>：驱动版本 → 端口设置 → 仿真模式 → 硬件连接</li>
+                        <li><strong>打印质量优化</strong>：分辨率 → 图像模式 → 打印浓度</li>
+                        <li><strong>位置调整</strong>：使用偏移量进行精确校准</li>
+                        <li><strong>双色打印</strong>：红色像素范围 → 色带位置 → 智能处理</li>
+                    </ul>
+
+                    <h2>最佳实践建议</h2>
+                    <ul>
+                        <li>定期检查驱动更新版本</li>
+                        <li>保持打印机固件最新</li>
+                        <li>使用质量可靠的数据线</li>
+                        <li>合理配置打印参数</li>
+                        <li>及时清理打印队列</li>
+                    </ul>
+                </div>
+                <div class="content-right">
+                    <h2>技术支持</h2>
+                    <div class="important-note">
+                        <strong>遇到问题时：</strong>
+                        <ol>
+                            <li>首先检查是否有驱动更新版本</li>
+                            <li>参考本手册进行标准排查</li>
+                            <li>收集打印数据文件以供技术分析</li>
+                            <li>联系技术支持获得专业帮助</li>
+                        </ol>
+                    </div>
+
+                    <h2>培训完成</h2>
+                    <div class="cover-slide" style="background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white; padding: 30px; border-radius: 10px; text-align: center;">
+                        <h3 style="color: white; margin-bottom: 15px;">🎉 恭喜完成培训！</h3>
+                        <p style="color: white; opacity: 0.9;">您已掌握实达24针打印机驱动程序的完整使用方法</p>
+                        <div style="margin-top: 20px; font-size: 0.9em; opacity: 0.8;">
+                            <p>✅ 安装配置 • ✅ 功能设置 • ✅ 问题排查</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 导航控制 -->
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="prevSlide()">上一页</button>
+        <button class="nav-btn" onclick="nextSlide()">下一页</button>
+    </div>
+
+    <!-- 页码计数器 -->
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">22</span>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        console.log('Total slides found:', totalSlides);
+        
+        // 更新总页数显示
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            console.log('showSlide called with n:', n);
+            console.log('totalSlides:', totalSlides);
+            
+            // 移除所有slide的active类
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                console.log('Removed active from slide', index);
+            });
+            
+            // 边界检查
+            if (n >= totalSlides) {
+                currentSlide = totalSlides - 1;
+            } else if (n < 0) {
+                currentSlide = 0;
+            } else {
+                currentSlide = n;
+            }
+            
+            // 显示当前slide
+            slides[currentSlide].classList.add('active');
+            console.log('Added active to slide', currentSlide);
+            
+            // 更新页码显示
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // 更新按钮状态
+            const prevBtn = document.querySelector('.nav-btn');
+            const nextBtn = document.querySelectorAll('.nav-btn')[1];
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            console.log('Current slide set to:', currentSlide);
+        }
+
+        function nextSlide() {
+            console.log('nextSlide called, current:', currentSlide);
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            console.log('prevSlide called, current:', currentSlide);
+            showSlide(currentSlide - 1);
+        }
+
+        // 键盘导航
+        document.addEventListener('keydown', function(event) {
+            switch(event.key) {
+                case 'ArrowRight':
+                case ' ':
+                    event.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                    event.preventDefault();
+                    prevSlide();
+                    break;
+                case 'Home':
+                    event.preventDefault();
+                    showSlide(0);
+                    break;
+                case 'End':
+                    event.preventDefault();
+                    showSlide(totalSlides - 1);
+                    break;
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>
